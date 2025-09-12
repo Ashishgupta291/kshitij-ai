@@ -1,0 +1,9 @@
+Flask
+Flask-Session
+Flask-Mail
+langgraph
+langchain-core
+langchain-groq
+psycopg2-binary
+python-dotenv
+requests
