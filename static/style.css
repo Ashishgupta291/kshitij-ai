@@ -1,0 +1,365 @@
+    :root {
+      --bg-dark: #121212;
+      --sidebar-bg: #1e1e1e;
+      --border: #2a2a2a;
+      --brand: #10a37f;
+      --text: #e4e4e4;
+      --text-muted: #aaa;
+      --content-max: 800px; /* max width for chat area */
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+    #scrollable{
+      flex: 1;                 
+      overflow-y: auto;        
+      padding-bottom: 1rem;
+    }
+    #chatWindow{
+      overflow-y: auto;
+    }
+    #scrollable::-webkit-scrollbar {
+      width: 6px;
+    }
+    #scrollable::-webkit-scrollbar-thumb {
+      background: #444;
+      border-radius: 3px;
+    }
+    #scrollable::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .sidebar.hidden {
+      transform: translateX(-100%);
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 1rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-header .logo {
+      background: var(--brand);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .logo{
+      font-family: cursive;
+    }
+    .log{
+      font-family: cursive;
+      padding-left: 6px;
+      padding-right: 5px;
+      background: var(--brand);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      text-align: center;
+    }
+    .new-chat {
+      margin: 1rem;
+      background: var(--brand);
+      padding: 0.75rem;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .section-title {
+      margin: 0.5rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    #chatList {
+      display: flex;
+      flex-direction: column; /* vertical stack */
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+
+    .chat-item {
+      margin-left:3px;
+      margin-right: 3px;
+      background: #191919;
+      padding: 0.75rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .chat-item.active {
+      background-color: #b1acac; /* light gray */
+      font-weight: bold;
+      color: #2a2a2a;
+    }
+    .chat-item:hover {
+      background: #333;
+    }
+
+    .chat-item.active:hover {
+      background: #b1acac; /* slightly darker than active bg */
+    }
+
+    .chat-item span {
+      flex: 1;
+      white-space: nowrap;       /* single line */
+      overflow: hidden;          /* hide overflow */
+      text-overflow: ellipsis;   /* ... for long text */
+    }
+
+    .chat-item i {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .chat-item.active i {
+      color: black;
+    }
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .sidebar-footer p {
+      margin: 0.5rem 0;
+      font-weight: bold;
+    }
+    .logout {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .logout:hover {
+      background: #2a2a2a;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      /* overflow: hidden; */
+      align-items: center; /* center content */
+    }
+
+    .chat-window {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      width: 100%;
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+
+    .chat-message {
+      background: #1e1e1e;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 0.5rem 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+             Helvetica, Arial, sans-serif, "Apple Color Emoji", 
+             "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+    .chat-message pre {
+      background: #1e1e1e;
+      padding: 10px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    .chat-message code {
+      font-family: "Fira Code", "Consolas", monospace;
+      font-size: 0.9rem;
+      background: #2a2a2a;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .chat-input {
+      border-top: 1px solid var(--border);
+      padding: .75rem;
+      display: flex;
+      gap: 0.5rem;
+      background: #1a1a1a;
+      width: 90%;
+      max-width: var(--content-max);
+      margin: 1rem;
+      border-radius: 12px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 0.85rem;
+      border: none;
+      border-radius: 12px;
+      background: #2a2a2a;
+      color: var(--text);
+    }
+    .chat-input input:focus {
+      outline: 1px solid var(--brand);
+    }
+    .chat-input button {
+      background: var(--brand);
+      border: none;
+      padding: 0 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      color: white;
+      font-size: 1rem;
+    }
+
+    /* Toggle button */
+    #toggleSidebar {
+      position: fixed;
+      top: 10px;
+      left: 200px; /* sits on right edge of sidebar */
+      z-index: 2001;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: left 0.3s ease;
+    }
+    .sidebar.hidden ~ #toggleSidebar {
+      left: 10px; /* move to screen edge when sidebar hidden */
+    }
+    
+
+    /* Thin scrollbar for WebKit browsers (Chrome, Edge, Safari) */
+      ::-webkit-scrollbar {
+        width: 6px;  /* scrollbar width */
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent; /* track background */
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #888;   /* scrollbar handle color */
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;   /* darker on hover */
+      }
+
+      /* Firefox scrollbar */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: #888 transparent;
+      }
+
+
+
+
+
+    /* Mobile responsiveness */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column; /* stack sidebar & main */
+    overflow: hidden;
+  }
+
+  /* Sidebar becomes overlay */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 75%;   /* narrower on mobile */
+    max-width: 260px;
+    height: 100dvh;
+    transform: translateX(-100%); /* hidden by default */
+  }
+
+  .sidebar.show {
+    transform: translateX(0); /* slide in */
+  }
+  .sidebar.show ~ #toggleSidebar {
+      left: 60%; /* move to screen edge when sidebar hidden */
+    }
+
+  /* Main takes full width */
+  .main {
+    flex: none;
+    width: 100dvw;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .chat-window {
+    width: 90%;
+  }
+  /* Chat input more compact */
+  .chat-input {
+    width: calc(100% - 2rem);
+    margin: 0.5rem auto;
+  }
+
+  /* Toggle button floats above */
+  #toggleSidebar {
+    top: 10px;
+    left: 10px;
+    font-size: 16px;
+    padding: 6px 10px;
+  }
+
+  .sidebar.hidden ~ #toggleSidebar {
+    left: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Even smaller tweaks */
+  .sidebar {
+    width: 85%;   /* use most of screen */
+  }
+
+  .chat-input input {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .chat-input button {
+    padding: 0 0.75rem;
+    font-size: 0.9rem;
+  }
+}
