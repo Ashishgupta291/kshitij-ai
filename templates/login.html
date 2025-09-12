@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kshitij AI - Auth</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #000; /* Black background like ChatGPT */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .auth-container {
+      background: #1e1e1e; /* Dark card */
+      padding: 2rem;
+      border-radius: 12px;
+      border-top-left-radius: 40%;
+      border-top-right-radius: 40%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    .or{color: #10a37f;}
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #10a37f; /* ChatGPT green accent */
+    }
+
+    h2 {
+      margin-bottom: 1.2rem;
+      color: #fff;
+    }
+    h3 { margin-bottom: 1.2rem; }
+    input {
+      width: 90%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #2a2a2a;
+      color: #fff;
+    }
+
+    input:focus {
+      outline: 2px solid #10a37f;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      background: #10a37f;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0d8a6a;
+    }
+
+    .google-btn {
+      text-decoration: none;
+      padding: 1rem;
+      border-radius: 1rem;
+
+      margin-top: 1rem;
+      background: #fff;
+      border: none;
+      color: #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: bold;
+    }
+
+    .google-btn img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .links {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .links a {
+      color: #10a37f;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+    .message {
+      margin-top: 1rem;
+      padding: 0.6rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .success { background: #80cbb9; color: #c5baba; }
+    .error { background: #c06c69; color: #bcb0b0; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 500px) {
+      .auth-container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container" id="authBox">
+    <!-- Login form by default -->
+    <div class="logo">Kshitij AI</div>
+    <h3 id="authTitle">Login</h3>
+
+    <a class="google-btn" href = "/google-login">
+      <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google logo">
+      Continue with Google
+    </a>
+    <p class="or">- - OR - -</p>
+
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="submitForm('login')">Login</button>
+
+    <div class="links">
+      <p><a onclick="switchForm('signup')">Create an account</a> | <a onclick="switchForm('forgot')">Forgot Password?</a></p>
+    </div>
+
+    <div class="message" id="messageBox"></div>
+  </div>
+
+  <script>
+    const backend_url = "http://127.0.0.1:5000"; // change if needed
+    
+    function showMessage(text, type="success") {
+      const msgBox = document.getElementById("messageBox");
+      msgBox.innerText = text;
+      msgBox.className = "message " + type;
+      msgBox.style.display = "block";
+    }
+
+    function switchForm(type) {
+      const box = document.getElementById("authBox");
+
+      if (type === "signup") {
+        box.innerHTML = `
+          <div class="logo">Kshitij AI</div>
+          <h3>Sign Up</h3>
+          <input type="text" id="username" placeholder="Full Name" required>
+          <input type="email" id="email" placeholder="Email" required>
+          <input type="password" id="password" placeholder="Password" required>
+          <button onclick="submitForm('signup')">Sign Up</button>
+          <div class="links">
+            <p><a onclick="switchForm('login')">Already have an account? Login</a></p>
+          </div>
+          <div class="message" id="messageBox"></div>
+        `;
+      }
+      else if (type === "forgot") {
+        box.innerHTML = `
+          <div class="logo">Kshitij AI</div>
+          <h3>Forgot Password</h3>
+          <input type="email" id="email" placeholder="Enter your email" required>
+          <button onclick="submitForm('forgot')">Reset Password</button>
+          <div class="links">
+            <p><a onclick="switchForm('login')">Back to Login</a></p>
+          </div>
+          <div class="message" id="messageBox"></div>
+        `;
+      }
+      else { // login
+        box.innerHTML = `
+          <div class="logo">Kshitij AI</div>
+          <h3>Login</h3>
+          <a class="google-btn">
+            <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google logo">
+            Continue with Google
+          </a>
+          <p class="or">- - OR - -</p>
+          <input type="email" id="email" placeholder="Email" required>
+          <input type="password" id="password" placeholder="Password" required>
+          <button onclick="submitForm('login')">Login</button>
+          <div class="links">
+            <p><a onclick="switchForm('signup')">Create an account</a> | <a onclick="switchForm('forgot')">Forgot Password?</a></p>
+          </div>
+          <div class="message" id="messageBox"></div>
+        `;
+      }
+    }
+
+    async function submitForm(type) {
+      try {
+        let payload = {};
+        let endpoint = "";
+
+        if (type === "login") {
+          endpoint = "/login";
+          payload = {
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value
+          };
+        } else if (type === "signup") {
+          endpoint = "/signup";
+          payload = {
+            username: document.getElementById("username").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value
+          };
+        } else if (type === "forgot") {
+          endpoint = "/forgot";
+          payload = { email: document.getElementById("email").value };
+        }
+
+        const res = await fetch(backend_url + endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Request failed");
+
+        showMessage(data.message || "Success!", "success");
+
+        if (type === "login") {
+          setTimeout(() => {
+            window.location.reload(); // refresh the current page
+          }, 1000);
+        }
+
+
+      } catch (err) {
+        showMessage("Error: " + err.message, "error");
+      }
+    } 
+  </script>
+</body>
+</html>

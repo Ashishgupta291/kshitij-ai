@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kshitij AI</title>
+  <link rel="stylesheet" href="static\style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div id = "scrollable">
+    <div class="sidebar-header">
+      <div class="logo">K</div>
+      Kshitij AI
+    </div>
+
+    <div class="new-chat" id="newChat">+ New chat</div>
+
+    <div class="section-title">Recent</div>
+    <div class="chat-list" id="chatList"></div>
+    </div>
+
+    <div class="sidebar-footer">
+      <p style="color: rgb(54, 133, 106); font-family:cursive;">Hi {{username}} !</p>
+      <a href="/logout" style="text-decoration: none; color: azure;"><div class="logout">Logout</div></a>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+    <div class="chat-window" id="chatWindow"> <h1 style="text-align: center;"><span class="log">K</span>shitij AI</h1></div>
+
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Send a message..." />
+      <button id="sendBtn"><i class="fa fa-paper-plane"></i></button>
+    </div>
+  </div>
+  
+  <!-- Toggle button -->
+  <button id="toggleSidebar"><i class="fa fa-bars"></i></button>
+
+  <script>
+    const backend_url = "http://127.0.0.1:5000"
+    const kshitij = "<h1 style='text-align: center;'><span class='log'>K</span>shitij AI</h1>"
+    //const backend_url= "http://192.168.1.7:5000"
+    const toggleBtn = document.getElementById("toggleSidebar");
+    const sidebar = document.getElementById("sidebar");
+    const sendBtn = document.getElementById("sendBtn");
+    const userInput = document.getElementById("userInput");
+    const chatWindow = document.getElementById("chatWindow");
+    const newChatBtn = document.getElementById("newChat");
+    const chatList = document.getElementById("chatList");
+
+    let threadId = null;
+    let conversations = [];
+
+    toggleBtn.addEventListener("click", () => {
+      if (window.innerWidth <= 768) {
+          sidebar.classList.toggle("show");
+        } else {
+          sidebar.classList.toggle("hidden");
+        }
+    });
+
+    // for highlighting a conv
+    function setActiveThread(id) {
+      const prevActive = document.querySelector(".chat-item.active");
+      if (prevActive) {
+        prevActive.classList.remove("active");
+      }
+
+      // add active to new item
+      const newActive = document.querySelector(`.chat-item[data-id='${id}']`);
+      if (newActive) {
+        newActive.classList.add("active");
+      }
+    }
+
+    // load all convo in side bar
+    async function loadThreads() {
+      try {
+        const res = await fetch(backend_url+ "/threads");
+        const threads = await res.json();
+        chatList.innerHTML = "";
+        
+        threads.forEach(thread => {
+            const id = thread.thread_id;
+            const preview = thread.preview;
+            console.log("Thread:", id, preview);
+            renderChatItem(id, preview);
+        });
+      } catch (err) {
+        console.error("failed to load threads", err);
+      }
+    }
+    
+    function renderChatItem(id, preview) {
+      conversations.push(id);
+
+      const chatItem = document.createElement("div");
+      chatItem.className = "chat-item";
+      chatItem.setAttribute("data-id", id);
+      chatItem.innerHTML = `
+        <span>${preview}</span>
+        <i class="fa fa-times"></i>
+      `;
+
+      // open thread
+      chatItem.addEventListener("click", () => {
+          loadConversation(id);
+          setActiveThread(id); 
+        });
+
+      // delete thread
+      chatItem.querySelector("i").addEventListener("click", async (e) => {
+        e.stopPropagation();
+        try {
+          const delRes = await fetch(`${backend_url}/thread/${id}`, { method: "DELETE" });
+          const delData = await delRes.json();
+          if (delData.cnt>0){
+             chatItem.remove();
+             conversations = conversations.filter(t => t !== id);
+             if (threadId === id) {
+                 threadId = null;
+                 chatWindow.innerHTML = kshitij; //here
+              }
+            }
+        } catch (err) {
+          console.error("delete failed", err);
+        }
+      });
+      chatList.prepend(chatItem);
+    }
+    // trigger load conv
+    document.addEventListener("DOMContentLoaded", loadThreads);
+
+    // Send message
+    async function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      const currentThreadId = threadId;
+      appendMessage("👤", text);
+      userInput.value = "";
+
+      try {
+        const res = await fetch(backend_url+ "/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text, thread_id: currentThreadId })
+        });
+        const data = await res.json();
+
+        if (threadId === currentThreadId) { //critical
+          appendMessage("🤖", data.response);
+          if (threadId==null){
+              threadId = data.thread_id;
+              updateSidebar(text);
+            }
+        } else {
+          console.warn("Response ignored because user switched conversation.");
+        }
+
+      } catch (err) {
+        appendMessage("System", "⚠️ Error contacting server.");
+        console.error(err);
+      }
+    }
+
+    // Append message to chat
+    // function appendMessage(role, content) {
+    //   const msg = document.createElement("div");
+    //   msg.className = "chat-message";
+    //   msg.innerHTML = `<b>${role}:</b> ${content}`;
+    //   chatWindow.appendChild(msg);
+    //   chatWindow.scrollTop = chatWindow.scrollHeight;
+    // }
+
+    function appendMessage(role, content) {
+        const msg = document.createElement("div");
+        msg.className = "chat-message";
+
+        // Convert AI content from Markdown -> HTML
+        let formatted = content;
+        if (role === "🤖") {
+          formatted = marked.parse(content, {
+            breaks: true,
+            highlight: function(code, lang) {
+              if (hljs.getLanguage(lang)) {
+                return hljs.highlight(code, { language: lang }).value;
+              }
+              return hljs.highlightAuto(code).value;
+            }
+          });
+        }
+
+        msg.innerHTML = `<b>${role} : </b>${formatted}`;
+        chatWindow.appendChild(msg);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+
+        msg.querySelectorAll("pre code").forEach((block) => {
+          hljs.highlightElement(block);
+        });
+      }
+
+    
+    // If this is a new thread, create sidebar item
+    function updateSidebar(prompt) {
+        renderChatItem(threadId, prompt.substring(0, 20)+ "...");
+        setActiveThread(threadId);
+    }
+
+    // Load a conversation
+    async function loadConversation(id) {
+      try {
+        const res = await fetch(`${backend_url}/thread/${id}`);
+        const data = await res.json();
+        threadId = data.thread_id;
+        chatWindow.innerHTML = kshitij; //here
+
+        for (const m of data.messages) {
+          if (m.role === "system") continue;
+          const role = (m.role === "human" || m.role === "user") ? "👤" : "🤖";
+          appendMessage(role, m.content);
+        }
+      } catch (err) {
+        console.error("load conv failed", err);
+        appendMessage("System", "⚠️ Failed to load conversation.");
+      }
+    }
+
+
+    sendBtn.addEventListener("click", sendMessage);
+    userInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    // New chat resets thread
+    newChatBtn.addEventListener("click", () => {
+      threadId = null;
+      chatWindow.innerHTML = kshitij; //here
+    });
+  </script>
+</body>
+</html>
