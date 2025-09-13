@@ -216,7 +216,7 @@
       font-family: "Fira Code", "Consolas", monospace;
       font-size: 0.9rem;
       background: #2a2a2a;
-      padding: 2px 5px;
+      padding: 2px 2px;
       border-radius: 4px;
     }
 
@@ -405,6 +405,7 @@
     font-size: 0.9rem;
   }
 }
+
 
 
 
