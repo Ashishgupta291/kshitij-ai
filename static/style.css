@@ -77,16 +77,12 @@
     .logo{
       font-family: cursive;
     }
-    .log{
-      font-family: cursive;
-      padding-left: 6px;
-      padding-right: 5px;
-      background: var(--brand);
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      text-align: center;
-    }
+    .logo-img {
+  width: 5px;      /* adjust size */
+  height: 5px;     /* adjust size */
+  border-radius: 50%; /* make it circular if desired */
+}
+
     .new-chat {
       margin: 1rem;
       background: var(--brand);
@@ -363,3 +359,4 @@
     font-size: 0.9rem;
   }
 }
+
