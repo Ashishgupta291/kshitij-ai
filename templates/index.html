@@ -186,11 +186,12 @@
 
     function appendMessage(role, content) {
         const msg = document.createElement("div");
-        msg.className = "chat-message";
-
-        // Convert AI content from Markdown -> HTML
-        let formatted = content;
-        if (role === "🤖") {
+        if (role === "👤") {
+          msg.className = "chat-message user";
+          msg.innerHTML = content;
+        }
+        else{
+          msg.className = "chat-message";
           formatted = marked.parse(content, {
             breaks: true,
             highlight: function(code, lang) {
@@ -200,9 +201,9 @@
               return hljs.highlightAuto(code).value;
             }
           });
+          msg.innerHTML = `<b>${role} : </b>${formatted}`;
         }
-
-        msg.innerHTML = `<b>${role} : </b>${formatted}`;
+        
         chatWindow.appendChild(msg);
         chatWindow.scrollTop = chatWindow.scrollHeight;
 
@@ -252,6 +253,7 @@
   </script>
 </body>
 </html>
+
 
 
 
