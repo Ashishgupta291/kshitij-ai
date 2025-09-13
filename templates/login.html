@@ -271,17 +271,18 @@
         if (type === "login") {
           setTimeout(() => {
             window.location.reload(); // refresh the current page
-          }, 1000);
+          }, 500);
         }
 
 
       } catch (err) {
-        showMessage("Error: " + err.message, "error");
+        showMessage(err.message, "error");
       }
     } 
   </script>
 </body>
 </html>
+
 
 
 
