@@ -192,6 +192,12 @@
              Helvetica, Arial, sans-serif, "Apple Color Emoji", 
              "Segoe UI Emoji", "Segoe UI Symbol";
     }
+    .chat-message.user {
+      background: #0d8a6a;
+      max-width: 80%;
+      margin-left: auto;  /* push to right */
+      text-align: right;
+    }
     .chat-message pre {
       background: #1e1e1e;
       padding: 10px;
@@ -357,6 +363,7 @@
     font-size: 0.9rem;
   }
 }
+
 
 
 
