@@ -73,8 +73,8 @@
       justify-content: center;
     }
      .log-img {
-          width: 25px;      /* adjust size */
-          height: 25px;     /* adjust size */
+          width: 20px;      /* adjust size */
+          height: 20px;     /* adjust size */
         }
     .logo-img {
           width: 30px;      /* adjust size */
@@ -357,6 +357,7 @@
     font-size: 0.9rem;
   }
 }
+
 
 
 
