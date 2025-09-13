@@ -176,8 +176,8 @@
 
     .chat-window {
       flex: 1;
-        display: flex;
-  flex-direction: column;
+      display: flex;
+      flex-direction: column;
       padding: 1rem;
       overflow-y: auto;
       width: 100%;
@@ -366,6 +366,7 @@
     font-size: 0.9rem;
   }
 }
+
 
 
 
