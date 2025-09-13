@@ -79,6 +79,10 @@ CREATE TABLE IF NOT EXISTS user_threads (
     preview TEXT
 )
 """)
+
+## slept and woke up
+cursor.execute("DELETE FROM user_threads")
+
 conn.commit()
 conn.close()
 
@@ -495,3 +499,4 @@ def delete_thread(thread_id):
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
+
