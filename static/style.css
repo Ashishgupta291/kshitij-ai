@@ -201,6 +201,10 @@
       max-width: 80%;
       margin-left: auto;
     }
+
+   .chat-message.ai {
+      background: #1e1e1e;
+    }
     .chat-message pre {
       background: #1e1e1e;
       padding: 10px;
@@ -366,6 +370,7 @@
     font-size: 0.9rem;
   }
 }
+
 
 
 
