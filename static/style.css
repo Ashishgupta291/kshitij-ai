@@ -197,6 +197,7 @@
       align-self: flex-end;
       background: #0d8a6a;
       max-width: 80%;
+      margin-left: auto;
     }
     .chat-message pre {
       background: #1e1e1e;
@@ -363,6 +364,7 @@
     font-size: 0.9rem;
   }
 }
+
 
 
 
