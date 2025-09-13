@@ -74,13 +74,11 @@
       color: white;
       font-weight: bold;
     }
-    .logo{
-      font-family: cursive;
-    }
+    
     .logo-img {
-  width: 30px;      /* adjust size */
-  height: 30px;     /* adjust size */
-}
+          width: 30px;      /* adjust size */
+          height: 30px;     /* adjust size */
+        }
 
     .new-chat {
       margin: 1rem;
@@ -358,6 +356,7 @@
     font-size: 0.9rem;
   }
 }
+
 
 
 
