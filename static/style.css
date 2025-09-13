@@ -78,8 +78,8 @@
       font-family: cursive;
     }
     .logo-img {
-  width: 5px;      /* adjust size */
-  height: 5px;     /* adjust size */
+  width: 30px;      /* adjust size */
+  height: 30px;     /* adjust size */
   border-radius: 50%; /* make it circular if desired */
 }
 
@@ -359,4 +359,5 @@
     font-size: 0.9rem;
   }
 }
+
 
