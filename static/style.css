@@ -80,7 +80,6 @@
     .logo-img {
   width: 30px;      /* adjust size */
   height: 30px;     /* adjust size */
-  border-radius: 50%; /* make it circular if desired */
 }
 
     .new-chat {
@@ -359,5 +358,6 @@
     font-size: 0.9rem;
   }
 }
+
 
 
