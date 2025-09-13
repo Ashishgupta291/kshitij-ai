@@ -201,7 +201,17 @@
               return hljs.highlightAuto(code).value;
             }
           });
-          msg.innerHTML = `<b>${role} : </b>${formatted}`;
+          //msg.innerHTML = `<b>${role} : </b>${formatted}`;
+
+          // Add Copy Response button at top
+          msg.innerHTML = `
+            <div class="ai-header">
+              <b>${role} :</b>
+              <button class="copy-response">Copy</button>
+            </div>
+            <div class="ai-content">${formatted}</div>
+          `;
+          
         }
         
         chatWindow.appendChild(msg);
@@ -210,10 +220,38 @@
 
         msg.querySelectorAll("pre code").forEach((block) => {
           hljs.highlightElement(block);
+
+          // Add copy button for each code block
+          const copyBtn = document.createElement("button");
+          copyBtn.className = "copy-code";
+          copyBtn.textContent = "Copy";
+          block.parentElement.style.position = "relative";
+          block.parentElement.appendChild(copyBtn);
+          
         });
       }
 
-    
+
+      // Copy Response
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("copy-response")) {
+          const aiContent = e.target.closest(".chat-message").querySelector(".ai-content").innerText;
+          navigator.clipboard.writeText(aiContent);
+          e.target.textContent = "Copied!";
+          setTimeout(() => (e.target.textContent = "Copy Response"), 1500);
+        }
+      });
+      
+      // Copy Code
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("copy-code")) {
+          const codeText = e.target.parentElement.querySelector("code").innerText;
+          navigator.clipboard.writeText(codeText);
+          e.target.textContent = "Copied!";
+          setTimeout(() => (e.target.textContent = "Copy"), 1500);
+        }
+      });
+
     // If this is a new thread, create sidebar item
     function updateSidebar(prompt) {
         renderChatItem(threadId, prompt.substring(0, 20)+ "...");
@@ -253,6 +291,7 @@
   </script>
 </body>
 </html>
+
 
 
 
