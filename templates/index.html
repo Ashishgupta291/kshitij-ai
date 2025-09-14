@@ -38,12 +38,12 @@
   <!-- Main content -->
   <div class="main">
     <div class="chat-window" id="chatWindow"> 
-      <h1 style='text-align: center;'><img src='https://i.ibb.co/gMRPbR4s/ks1-removebg-preview.png' class='logo-img'>shitij AI</h1>
+<!--       <h1 style='text-align: center;'><img src='https://i.ibb.co/gMRPbR4s/ks1-removebg-preview.png' class='logo-img'>shitij AI</h1>
       <div id="suggestions" class="suggestions">
         <button class="suggestion-btn">What can you do?</button>
         <button class="suggestion-btn">Explain AI in simple words</button>
         <button class="suggestion-btn">Give me 3 startup ideas</button>
-      </div>
+      </div> -->
     </div>
 
     <div class="chat-input">
@@ -68,7 +68,6 @@
         <button class="suggestion-btn">Give me 3 startup ideas</button>
       </div>
     `;
-
     const toggleBtn = document.getElementById("toggleSidebar");
     const sidebar = document.getElementById("sidebar");
     const sendBtn = document.getElementById("sendBtn");
@@ -76,7 +75,7 @@
     const chatWindow = document.getElementById("chatWindow");
     const newChatBtn = document.getElementById("newChat");
     const chatList = document.getElementById("chatList");
-
+    showSuggestions();
     let threadId = null;
     let conversations = [];
 
@@ -322,12 +321,12 @@
     // New chat resets thread
     newChatBtn.addEventListener("click", () => {
       threadId = null;
-      // chatWindow.innerHTML = kshitij; //here
       showSuggestions();
     });
   </script>
 </body>
 </html>
+
 
 
 
