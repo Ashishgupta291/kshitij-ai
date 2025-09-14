@@ -353,6 +353,30 @@
         scrollbar-color: #888 transparent;
       }
 
+        .suggestions {
+          margin-top: 1rem;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          justify-content: center;
+        }
+        
+        .suggestion-btn {
+          background: #2a2a2a;
+          color: #e4e4e4;
+          border: 1px solid #444;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          transition: background 0.2s;
+        }
+        
+        .suggestion-btn:hover {
+          background: #0d8a6a;
+        }
+
+
 
 
 
@@ -433,6 +457,7 @@
     }
         
 }
+
 
 
 
