@@ -50,8 +50,18 @@
 
   <script>
     const backend_url = "https://kshitij-ai.onrender.com"
-    const kshitij = "<h1 style='text-align: center;'><img src='https://i.ibb.co/gMRPbR4s/ks1-removebg-preview.png' class='logo-img'>shitij AI</h1>"
-    //const backend_url= "http://192.168.1.7:5000"
+    //const kshitij = "<h1 style='text-align: center;'><img src='https://i.ibb.co/gMRPbR4s/ks1-removebg-preview.png' class='logo-img'>shitij AI</h1>"
+    const kshitij = `
+      <h1 style='text-align: center;'>
+        <img src='https://i.ibb.co/gMRPbR4s/ks1-removebg-preview.png' class='logo-img'>shitij AI
+      </h1>
+      <div id="suggestions" class="suggestions">
+        <button class="suggestion-btn">What can you do?</button>
+        <button class="suggestion-btn">Explain AI in simple words</button>
+        <button class="suggestion-btn">Give me 3 startup ideas</button>
+      </div>
+    `;
+
     const toggleBtn = document.getElementById("toggleSidebar");
     const sidebar = document.getElementById("sidebar");
     const sendBtn = document.getElementById("sendBtn");
@@ -131,7 +141,8 @@
              conversations = conversations.filter(t => t !== id);
              if (threadId === id) {
                  threadId = null;
-                 chatWindow.innerHTML = kshitij; //here
+                 // chatWindow.innerHTML = kshitij; //here
+                 showSuggestions();
               }
             }
         } catch (err) {
@@ -183,14 +194,6 @@
   }
     }
 
-    // Append message to chat
-    // function appendMessage(role, content) {
-    //   const msg = document.createElement("div");
-    //   msg.className = "chat-message";
-    //   msg.innerHTML = `<b>${role}:</b> ${content}`;
-    //   chatWindow.appendChild(msg);
-    //   chatWindow.scrollTop = chatWindow.scrollHeight;
-    // }
 
     function appendMessage(role, content) {
         const msg = document.createElement("div");
@@ -272,8 +275,8 @@
         const res = await fetch(`${backend_url}/thread/${id}`);
         const data = await res.json();
         threadId = data.thread_id;
-        chatWindow.innerHTML = kshitij; //here
-
+        // chatWindow.innerHTML = kshitij; //here
+        chatWindow.innerHTML = "<h1 style='text-align: center;'><img src='https://i.ibb.co/gMRPbR4s/ks1-removebg-preview.png' class='logo-img'>shitij AI</h1>";
         for (const m of data.messages) {
           if (m.role === "system") continue;
           const role = (m.role === "human" || m.role === "user") ? "👤" : "🤖";
@@ -285,6 +288,24 @@
       }
     }
 
+    function attachSuggestionHandlers() {
+      document.querySelectorAll(".suggestion-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const text = btn.textContent;
+          document.getElementById("suggestions").remove(); // remove suggestions
+          userInput.value = text; 
+          sendMessage(); // send as normal message
+        });
+      });
+    }
+    
+    // call this every time we reset chatWindow
+    function showSuggestions() {
+      chatWindow.innerHTML = kshitij;
+      attachSuggestionHandlers();
+    }
+
+
 
     sendBtn.addEventListener("click", sendMessage);
     userInput.addEventListener("keypress", (e) => {
@@ -294,11 +315,13 @@
     // New chat resets thread
     newChatBtn.addEventListener("click", () => {
       threadId = null;
-      chatWindow.innerHTML = kshitij; //here
+      // chatWindow.innerHTML = kshitij; //here
+      showSuggestions();
     });
   </script>
 </body>
 </html>
+
 
 
 
