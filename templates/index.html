@@ -169,6 +169,8 @@
       sendBtn.innerHTML = `<span class="send-loading"></span>`;  
       
       const currentThreadId = threadId;
+      if (currentThreadId==null){ document.getElementById("suggestions").remove();}
+      
       appendMessage("👤", text);
       userInput.value = "";
 
@@ -298,7 +300,7 @@
       document.querySelectorAll(".suggestion-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const text = btn.textContent;
-          document.getElementById("suggestions").remove(); // remove suggestions
+          //document.getElementById("suggestions").remove(); // remove suggestions
           userInput.value = text; 
           sendMessage(); // send as normal message
         });
@@ -326,6 +328,7 @@
   </script>
 </body>
 </html>
+
 
 
 
