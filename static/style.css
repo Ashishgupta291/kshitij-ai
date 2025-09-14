@@ -287,6 +287,28 @@
       font-size: 1rem;
     }
 
+    /* Loading spinner inside the button */
+        .send-loading {
+          border: 2px solid #f3f3f3;  /* light grey */
+          border-top: 2px solid #10a37f; /* green brand color */
+          border-radius: 50%;
+          width: 16px;
+          height: 16px;
+          animation: spin 1s linear infinite;
+          display: inline-block;
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
+        /* Disabled state */
+        .chat-input button:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
     /* Toggle button */
     #toggleSidebar {
       position: fixed;
@@ -411,6 +433,7 @@
     }
         
 }
+
 
 
 
