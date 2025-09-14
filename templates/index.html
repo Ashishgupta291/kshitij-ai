@@ -147,6 +147,10 @@
     async function sendMessage() {
       const text = userInput.value.trim();
       if (!text) return;
+
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = `<span class="send-loading"></span>`;  
+      
       const currentThreadId = threadId;
       appendMessage("👤", text);
       userInput.value = "";
@@ -172,7 +176,11 @@
       } catch (err) {
         appendMessage("System", "⚠️ Error contacting server.");
         console.error(err);
-      }
+      } finally {
+        // re-enable button
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = `<i class="fa fa-paper-plane"></i>`;
+  }
     }
 
     // Append message to chat
@@ -291,6 +299,7 @@
   </script>
 </body>
 </html>
+
 
 
 
